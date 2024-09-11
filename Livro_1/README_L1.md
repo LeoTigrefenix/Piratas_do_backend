@@ -48,11 +48,23 @@ Livro_1/
 *cdgf/models/esquemas*
 - adicionado os _Schema_ das collections criadas, `conves` e `salaTesouro`
 
-*cdgf/models/config*
+*cdgf/config*
 - configurando conexão com o mondoDB, `mongoose_conexao.js`
 
-*cdgf/models/contraCapa*
-- futuramente aqui será salvo as variáveis de ambiente, `.pirata`
+*cdgf/contraCapa*
+- futuramente aqui será salvo as variáveis de ambiente
 
 *tests*
 - pasta destinada a futuramente possuir funções de testes para a aplicação do Livro 1
+
+
+
+### Livro_1: v02- sem .env. MongoDB online conectado. Schema conves ok
+*cdgf/contraCapa*
+- Deixei de salvar no github as variáveis de ambiente para minha segurança, dado que o sistema está aberto na internet para qualquer pessoa consultar.
+
+*cdgf/config*
+- finalizada a conexão com o mongodb em `mongoose_conexao.js`
+
+*cdgf/models/esquemas*
+- iniciado a montagem do esquema do conves  em `conves.js` 

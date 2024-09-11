@@ -10,16 +10,18 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+//importar constantes
+const { grandemongo } = require('../contraCapa/.pirata') //online Leonardo
+console.log(grandemongo)
+console.log(typeof(grandemongo))
+
 // bibliotecas importadas 
 const mongoose = require('mongoose')
 
+mongoose.connect('mongodb+srv://<usuario>:<senha>@<nome do cluster>.mongodb.net/<nome do database>?retryWrites=true&w=majority', {
+    useNewUrlParser: true
+})
+.then(() => console.log('MongoDB Atlas connected'))
+.catch(err => console.error(err));
 
-// Declarar o caminho para conexão no banco de dados
-mongoose.meuDataBase = mongoose.createConnection('');
 
-//Função para conectar ao mongo 
-let ConexaoMongo = mongoose.connection;
-    ConexaoMongo.on('error', console.error.bind(console, 'Erro conexao com MongoDB:'));
-    ConexaoMongo.once('open', function() {
-        console.log('Conexao com MongoDB realizada com sucesso')
-    });
