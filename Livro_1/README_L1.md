@@ -62,7 +62,9 @@ Livro_1/
 ### Livro_1: v02- sem .env. MongoDB online conectado. Schema conves ok
 *cdgf/contraCapa*
 - Deixei de salvar no github as variáveis de ambiente para minha segurança, dado que o sistema está aberto na internet para qualquer pessoa consultar.
+- bugou precisei fazer um para os tópicos abaixo, por isso v03 repete `MongoDB online conectado. Schema conves ok`
 
+### Livro_1: v03-MongoDB online conectado. Schema conves ok
 *cdgf/config*
 - finalizada a conexão com o mongodb em `mongoose_conexao.js`
 
