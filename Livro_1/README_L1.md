@@ -70,3 +70,30 @@ Livro_1/
 
 *cdgf/models/esquemas*
 - iniciado a montagem do esquema do conves  em `conves.js` 
+
+
+### Livro_1: v04-atualização nodemodules; retirado mongoDB DeprecationWarning; Schemas e mongoose.model corrigidos
+* atualização do `package.json` para evitar warnings e vulnerabilidade. Além de ter sido adicionado _body-parser_ e _consign_, ambos, para uso futuro. 
+
+    DE:
+    "express": "4.19.2",
+    "mongoose": "8.5.1",
+    "nodemon": "^3.1.4"
+    PARA:
+    "body-parser": "1.20.3",
+    "consign": "0.1.6",
+    "express": "4.21.0",
+    "mongoose": "8.5.1",
+    "nodemon": "3.1.4"
+
+*cdgf*
+* mensagem de bem vindo, quando iniciar o backend, em `navio.js`
+
+*cdgf/config*
+* tentativa de retirar o warning DeprecationWarning useNewUrlParser. Aparentemente deu certo com as edições feitas no `mongoose_conxao.js`
+
+*cdgf/models/esquemas*
+`conves.js` e `salaTesouro.js`
+* Correção nos Schemas criados. Estavam com o .model errado tanto na referencia usando mongoose.padrao que nem é do código quando usando dadosSchema que também não é. 
+* colocado a função para inicializar um dado fantasma na collection
+* externalizado o modelo, com o Schema correto, no app pelo module.exports

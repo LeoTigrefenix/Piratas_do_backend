@@ -1,224 +1,124 @@
-//================================================
-// interação externa
-//================================================
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//  Backend do e-book: PIRATAS DO BACKEND - Navegando em node.js, NoSQL e REST API
+//  Versão: 2.0
+//  Editor: Capitão Tigrefenix
+//
+//****************************************************************************************************************
+// Definifição do Schema da collection 'salaTesouros'
+// Será armazenado os produtos NÃO comeciáveis: Mapas de navegação, Mapas de tesouro, Tesouros, moedas
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 module.exports = app => {
-
-    //Novo esquema para colecao teste ////////////////////////////////////
-       const iotSchema = new app.mongoose.Schema({    
-           _h: Number,
-           ll:String,  //"o" é original, "n" é nulo , "s" é substituido
-           ip:  String,                        
-           ct: Number,
-           vt: Number,
-           it: Number,
-           ht: Number,
-           tab: Number,
-           cons:Number,
-           auh: Number,
-           aur: Number,
-           sto: Number,
-           ha:  Number,
-           hb:  Number,
-           iha: Number,
-           ihb: Number,
-           ta:  Number,
-           tb:  Number,
-           ita: Number,
-           itb: Number,
-           sb:  Number,
-           vca: Number,
-           vcb: Number,
-           iva: Number,
-           ivb: Number,
-           ca:  Number,
-           cb:  Number,
-           ica: Number,
-           icb: Number,
-           irh: Number,
-           ago: Number,    
-           vp1: {                          
-               1: Number,
-               2: Number,
-               3: Number,
-               4: Number,
-               5: Number,
-               6: Number,
-               7: Number,
-               8: Number, 
-               9: Number,
-               10: Number,
-               11: Number,
-               12: Number,
-               13: Number,
-               14: Number,
-               15: Number,
-               16: Number      
-               
-           },   
-           cp1: {                          
-             1: Number,
-             2: Number,
-             3: Number,
-             4: Number,
-             5: Number,
-             6: Number,
-             7: Number,
-             8: Number,
-             9: Number,
-           10: Number,
-           11: Number,
-           12: Number,
-           13: Number,
-           14: Number,
-           15: Number,
-           16: Number   
-         },
-         hp1: {                          
-           1: Number,
-           2: Number,
-           3: Number,
-           4: Number,
-           5: Number,
-           6: Number,
-           7: Number,
-           8: Number,
-           9: Number,
-           10: Number,
-           11: Number,
-           12: Number,
-           13: Number,
-           14: Number,
-           15: Number,
-           16: Number  
-       },
-         tp1: {                          
-           1: Number,
-           2: Number,
-           3: Number,
-           4: Number,
-           5: Number,
-           6: Number,
-           7: Number,
-           8: Number 
-       },
-       sb1: String
-       });
+ 
+  //Novo esquema para colecao  salaTesouros////////////////////////////////////
+    //descrever o Schema do vetor de mapas
+    const mapasSchema = new app.mongoose.Schema({    
+        entrada   : { data: Date, responsavel: String},
+        saida     : { data: Date, responsavel: String},
+        tipo      : String, //(mapa de) rota ou tesouro
+        descricao : String,
+        quantidade: Number
+    });
+    //descrever o Schema do vetor de Tesouros
+    const tesourosSchema = new app.mongoose.Schema({    
+      entrada   : { data: Date, responsavel: String},
+      saida     : { data: Date, responsavel: String},
+      embalagem : String, //baú, caixa, barril ...
+      descricao : String, 
+      quantidade: Number
+    });
+  
+    const salaTesourosSchema =  new app.mongoose.Schema({
+      numeroBook  : Number,  //1º 2º 3º  
+      nRegistros  : Number,  // caso seja 53 000 (aproximadamente 500bits para criar e 300bits cada)
+      mapas       : [mapasSchema],  //posso usar o _id para deletar
+      tesouros    : [tesourosSchema],  //posso usar o _id para deletar
+      cofreMoedas : {mOuro: Number, mPrata: Number, mCobre: Number}
+    });
+ 
+    //Cria nova coleção (collection) no mongo no formato do salaTesourosSchema. Precisa terminar em 's'
+      const STESOUROS = app.mongoose.model('salaTesouros', salaTesourosSchema);   
+    //deixar acessível por outros arquivos
      
-   
-       const dadoSchema =  new app.mongoose.Schema({
-         _id: String,
-         apo: String,
-         ip:  String,
-         ts:  String,
-         cab: {        
-             ia:  String, 
-             sn:  String, 
-             mcu: String,
-             afe: String,
-             sna: String,
-             id:  String, 
-             n1:  String, 
-             emp: String, 
-             set: String,
-             mod: String, 
-             st:  String, 
-             sr:  String,
-             nt:  String,
-             cp:  String,
-             cc:  String,
-             rc:  String,
-             fw:  String,
-             lat: String,
-             long: String
-         },
-         iot: [iotSchema]
-       });
-   
-    //CRIA O BANCO  dados NO MONGO
-    const Dados = app.mongoose.padrao.model('dados', dadoSchema);   //Cria nova coleção no mongo no formato do dadosSchema
-   
-   /////////////////////////////////====================================================
-   //VAI CRIAR O BANCO DE DADOS donos
-   
-       const Hunico = async function(){ 
-                   const retorno = await Dados.aggregate([
-                       { $match: {"_id": '90-0'}},
-                       { $unwind: '$iot'},
-                       { $sort: { 'iot._h': -1 }}, 
-                       { $limit: 1 }
-                       /*{ $project: { 'iot.ct': 1, '_id': 0 }}*/
-                     ]).then(resp => { return resp })
-                   .catch(e => {
-                       if(process.env.NODE_ENV =='gnomo'|| process.env.NODE_ENV =='gnomo'){
-                         console.log(" ");
-                         console.log("##Arq:dados.js; FUNC: - ocorre ao iniciar backend; MSG:");console.log("Erro ao criar database dados");
-                         console.log(" ");
-                       console.log(e);};
-                       return 500
-                   })
-                                            
-       if (retorno.length > 0 ) {          
-               ///teste//////////////////////////
-               if(process.env.NODE_ENV =='gnomo'|| process.env.NODE_ENV =='gnomo'){
-                 console.log(" ");
-               console.log("##Arq:dados.js; FUNC: - ocorre ao iniciar backend; MSG:");
-               console.log("database 'dados' OK");   
-               console.log(" ");
-               }
-               ///////////////////////////////
-          
-       } else { //se nao existe, registra novo DB no sistema
-       
-         ///teste//////////////////////////
-           if(process.env.NODE_ENV =='gnomo'|| process.env.NODE_ENV =='gnomo'){
-             console.log(" ");
-             console.log("##Arq:dados.js; FUNC: - ocorre ao iniciar backend; MSG:");
-             console.log("FOI CRIADO AGORA O DATABASE 'dados'  ---- OK!"); 
-             console.log(" ");
-          }
-         ///////////////////////////////
-   
-            const fantasma = new Dados({
-               _id: '90-0',
-               apo: 'fantasma',
-               ip:  '0',
-               ts:  new  Date(),
-               cab: {  
-                   ia:  '0', 
-                   sn:  '0', 
-                   mcu: '0',               
-                   id: '0',
-                   n1:  '0', 
-                   emp: "vazio", 
-                   set: "vazio",
-                   mod: "vazio", 
-                   st:  'D', 
-                   sr:  '0', 
-                   tb:  '0',
-                   qb:  '0',
-                   cp:  '0',                
-                   rc:  '0',
-                   fw:  '0',
-                   lat: "-7.21189",
-                   long: "-36.6294"
-               },
-               iot: [hzero]
-             });
-   
-             fantasma.save()
-   
-                  //Efetua backup da acao no mongo ///////////////////////////////////
-           const transf = {
-               nome: 'dados',
-               caminho: 'colecoes/razao/dados',
-               status: 'Ativo',
-               datacriacao: new Date(),
-               movido: null
-           }
-            const fazerhistoria = app.api.mongo.historicoRegDB.criaHistorico(transf);
-   
-       }
-       return retorno
-       }
-     const consciencia = Hunico();      
+
+ 
+ /////////////////////////////////====================================================
+ //Agora criar de fato a collection, fazer um dado fantasma lá para iniciar
+
+
+    //ISSO NÃO É OBRIGATÓRIO, ESTOU FAZENDO PARA FACILITAR A VALIDAÇÃO QUE DEU CERTO OS PASSOS ANTERIORES
+
+
+
+    module.exports = STESOUROS; //usarei futuramente !
+
+    // Função que vai verificar se o dado fantasma foi criado. 
+    const criarCollection = async function(){ 
+
+      const buscaFantasma = await STESOUROS.find(
+        {numeroBook:0},
+        {numeroBook:1}
+      )
+      .then(resp => {
+        //LOG-------------------------------------------------------------  
+          console.log("##Arq:conves.js; FUNC: criarCollection; MSG:", resp);
+        //---------------------------------------------------------------   
+        return [resp] })
+      .catch(e => {    
+            //LOG-------------------------------------------------------------  
+              console.log("##Arq:salaTesouro.js; FUNC: criarCollection; MSG:");
+              console.log("Erro ao criar database dados");
+              console.log(" ------------------------------------- ");
+              console.warn(e);
+            //----------------------------------------------------------------
+            return 500
+      })
+                           
+      if (buscaFantasma.length < 0 ) {          
+        //LOG-------------------------------------------------------------
+          console.log("##Arq:salaTesouro.js; FUNC: criarCollection; MSG:");
+          console.log("Será criado a collection 'salaTEsouros' "); 
+          console.log(" ------------------------------------- ");
+        //----------------------------------------------------------------
+
+        //montar valor fantastama para ininicar a collection
+          const mapasFantasma = {
+            entrada   : { data: new Date(), responsavel: "inicialização"},
+            saida     : { data: null, responsavel: null},
+            tipo      : "inicialização",
+            descricao : "inicialização da coleção",
+            quantidade: 0
+          };
+
+          const tesourosFantasma = {
+            entrada   : { data: new Date(), responsavel: "inicialização"},
+            saida     : { data: null, responsavel: null},
+            tipo      : "inicialização",
+            embalagem : null,
+            quantidade: 0          
+          };
+          //ATENÇÃO QUE AQUI NAO É UM OBJETO QUALQUER, E SIM UM MODELO DO SCHEMA CRIADO
+          const salaTesourosFantasma = new STESOUROS({
+              numeroBook  : 0,
+              nRegistros  : 0,
+              mapas       : [mapasFantasma],
+              tesouros    : [tesourosFantasma],
+              cofreMoedas : {mOuro: 0, mPrata: 0, mCobre: 0}
+          });
+        //Salvar valor fantasma na collection, criando-a
+        //A collection será visível no MongoDB após a inserção do primeiro documento.
+          salaTesourosFantasma.save()
+      }
+      return 
+    }
+
+  
+  //chamar a constante para ativar a função 
+   const consciencia = criarCollection();  
+
+  //deixar acessível por outros arquivos
+    return {STESOUROS,consciencia}
+ 
+}
