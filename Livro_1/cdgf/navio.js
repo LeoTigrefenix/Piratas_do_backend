@@ -23,8 +23,25 @@ const port = 3000;             // Porta que o servidor irá ouvir
 
 // ... Resto do seu código
 
+console.log(`  O autor é contra a pirataria.
+    O uso da referência como pirata e a descrição do backend como se fosse o navio pirada vem do gosto do autor pela obra "Piratas do Caribe". 
+    Não pratique a pirataria!!
+ `)
+
+
+ console.log(`  The author is against piracy. 
+    The use of the reference to a pirate and the description of the backend as if it were the pirated ship comes from the author liking the work "Pirates of the Caribbean". 
+    Don't practice piracy!!
+ `)
+
+
+
+
 
 console.log(`
+
+
+
     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⠀⠀⢀⣠⣤⣶⣶⣶⣶⣶⣶⣶⣦⣤⣀⠀⠀⠀⠀⠀⢀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⡔⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢟⣫⣯⣷⣾⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
