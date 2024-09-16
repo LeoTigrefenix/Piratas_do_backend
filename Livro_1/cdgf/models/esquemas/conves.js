@@ -39,7 +39,7 @@ module.exports = app => {
       });
    
       //Cria nova coleção (collection) no mongo no formato do convesSchema. Precisa terminar em 's'
-        const CONVES = app.mongoose.model('conves', convesSchema);   
+        const CONVES = app.mongoose.online.model('conves', convesSchema);   
       
   /////////////////////////////////====================================================
   /////////////////////////////////====================================================
@@ -47,24 +47,20 @@ module.exports = app => {
 
   //ISSO NÃO É OBRIGATÓRIO, ESTOU FAZENDO PARA FACILITAR A VALIDAÇÃO QUE DEU CERTO OS PASSOS ANTERIORES
   
-  //*/*/*/*/--
-  // nesse caso
-  module.exports = CONVES; //usarei futuramente !
-  const CONVES = require('../Livro_1/cdgf/models/esquemas/conves.js'); // COMO não subi para o app ele é requerido assim 
-  //*/*/*/*/--
+ 
 
     // Função que vai verificar se o dado fantasma foi criado. 
       const criarCollection = async function(){ 
 
-        const buscaFantasma = await STESOUROS.find(
-          {numeroBook:0},
-          {numeroBook:1}
-        )
+        const buscaFantasma = await CONVES.aggregate([
+          { $match: {"numeroBook":0} },
+          { $project: { _id: 0 } }
+        ])
         .then(resp => { 
           //LOG-------------------------------------------------------------  
             console.log("##Arq:conves.js; FUNC: criarCollection; MSG:", resp);
           //---------------------------------------------------------------   
-          return [resp] })
+          return resp })
         .catch(e => {    
               //LOG-------------------------------------------------------------  
                 console.log("##Arq:conves.js; FUNC: criarCollection; MSG:");
@@ -72,13 +68,13 @@ module.exports = app => {
                 console.log(" ------------------------------------- ");
                 console.warn(e);
               //----------------------------------------------------------------
-              return 500
+              return []
         })
                             
-        if (buscaFantasma.length < 0 ) {          
+        if (buscaFantasma.length === 0 ) {          
           //LOG-------------------------------------------------------------
             console.log("##Arq:conves.js; FUNC: criarCollection; MSG:");
-            console.log("Será criado a collection 'salaTEsouros' "); 
+            console.log("Será criado a collection 'conves' "); 
             console.log(" ------------------------------------- ");
           //----------------------------------------------------------------
 
@@ -99,7 +95,7 @@ module.exports = app => {
               quantidade: 0          
             };
             //ATENÇÃO QUE AQUI NAO É UM OBJETO QUALQUER, E SIM UM MODELO DO SCHEMA CRIADO
-            const salaTesourosFantasma = new STESOUROS({
+            const salaTesourosFantasma = new CONVES({
                 numeroBook  : 0,
                 nRegistros  : 0,
                 comida      : [comidaBebidaFantasma],
@@ -119,3 +115,9 @@ module.exports = app => {
   //deixar acessível por outros arquivos
     return {CONVES,consciencia}
 }
+  //RASCUNHO
+  // //*/*/*/*/--
+  // // nesse caso
+  // module.exports = CONVES; //usarei futuramente !
+  // const CONVES = require('../Livro_1/cdgf/models/esquemas/conves.js'); // COMO não subi para o app ele é requerido assim 
+  // //*/*/*/*/--

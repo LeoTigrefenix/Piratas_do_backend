@@ -17,21 +17,41 @@ const consign = require('consign');
 const bodyParser = require('body-parser');
 
 //constantes
-const app = express();         //variável que vai dar acesso as funções do express em todos os códigos do backend
 const port = 3000;             // Porta que o servidor irá ouvir
 
+//variável que vai dar acesso as funções do express em todos os códigos do backend
+const app = express();         
 
-// ... Resto do seu código
+//deixar o mongoose mais acessível, não precisa dar require em todo arquivo que usa ele
+app.mongoose = mongoose;
 
-console.log(`  O autor é contra a pirataria.
+//declaração dos arquivos para serem acessíveis entre eles
+consign()
+    .include("./cdgf/config")
+    .then("./cdgf/contraCapa")
+    .then("./cdgf/models/esquemas")  
+    .into(app);
+
+
+
+
+// ... Resto do código
+
+console.log(` 
+    !!
+    O autor é contra a pirataria.
     O uso da referência como pirata e a descrição do backend como se fosse o navio pirada vem do gosto do autor pela obra "Piratas do Caribe". 
-    Não pratique a pirataria!!
+    Não pratique a pirataria
+    !!
  `)
 
 
- console.log(`  The author is against piracy. 
+ console.log(` 
+    !!
+    The author is against piracy. 
     The use of the reference to a pirate and the description of the backend as if it were the pirated ship comes from the author liking the work "Pirates of the Caribbean". 
-    Don't practice piracy!!
+    Don't practice piracy
+    !!
  `)
 
 

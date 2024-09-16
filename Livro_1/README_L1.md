@@ -97,3 +97,17 @@ Livro_1/
 * Correção nos Schemas criados. Estavam com o .model errado tanto na referencia usando mongoose.padrao que nem é do código quando usando dadosSchema que também não é. 
 * colocado a função para inicializar um dado fantasma na collection
 * externalizado o modelo, com o Schema correto, no app pelo module.exports
+
+
+### Livro_1: v05 mongoDB conectado corretamente, com criação dos fantasmas
+*cdgf*
+* Alteração no consig() do `navio.js` para acessar os arquivos entre sí. Mexi no console log também com um melhor espaçamento
+
+*cdgf/config*
+* `mongoose_conexao.js` tava uma bagunça, o apontamento para a .pirata estava errado, a inicialização do mongoose estava errada, coloquei o mongoose.online para ser o acesso [como usamos app, fica app.mongoose.online.(function here)]. Coloquei uns try catch tb para ajudar caso de problema na conexão denovo e assim não quebre tudo. 
+
+*cdgf/models/esquemas*
+* `conves.js` arrumado os bugs, termo errado STESOURO para CONVES, função find para aggregate, uso do mongoose.online. O if para criar o fantasmta estava errado. Ajustado module.export para dar acesso ao arquivo. 
+
+* `salaTesouro.js`  uso do mongoose.online. O if para criar o fantasmta estava errado. module.export para dar acesso ao arquivo.
+

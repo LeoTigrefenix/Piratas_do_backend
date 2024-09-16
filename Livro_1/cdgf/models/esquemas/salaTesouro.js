@@ -39,7 +39,7 @@ module.exports = app => {
     });
  
     //Cria nova coleção (collection) no mongo no formato do salaTesourosSchema. Precisa terminar em 's'
-      const STESOUROS = app.mongoose.model('salaTesouros', salaTesourosSchema);   
+      const STESOUROS = app.mongoose.online.model('salaTesouros', salaTesourosSchema);   
     //deixar acessível por outros arquivos
      
 
@@ -49,23 +49,19 @@ module.exports = app => {
 
 
     //ISSO NÃO É OBRIGATÓRIO, ESTOU FAZENDO PARA FACILITAR A VALIDAÇÃO QUE DEU CERTO OS PASSOS ANTERIORES
-
-
-
-    module.exports = STESOUROS; //usarei futuramente !
-
     // Função que vai verificar se o dado fantasma foi criado. 
     const criarCollection = async function(){ 
 
-      const buscaFantasma = await STESOUROS.find(
-        {numeroBook:0},
-        {numeroBook:1}
-      )
+      const buscaFantasma = await STESOUROS.aggregate([
+        { $match: {"numeroBook":0} },
+        { $project: { _id: 0 } }
+      ])
       .then(resp => {
-        //LOG-------------------------------------------------------------  
-          console.log("##Arq:conves.js; FUNC: criarCollection; MSG:", resp);
-        //---------------------------------------------------------------   
-        return [resp] })
+            //LOG-------------------------------------------------------------  
+              console.log("##Arq:conves.js; FUNC: criarCollection; MSG:", resp);
+            //---------------------------------------------------------------   
+          return resp
+      })
       .catch(e => {    
             //LOG-------------------------------------------------------------  
               console.log("##Arq:salaTesouro.js; FUNC: criarCollection; MSG:");
@@ -73,10 +69,10 @@ module.exports = app => {
               console.log(" ------------------------------------- ");
               console.warn(e);
             //----------------------------------------------------------------
-            return 500
+            return []
       })
                            
-      if (buscaFantasma.length < 0 ) {          
+      if (buscaFantasma.length === 0 ) {          
         //LOG-------------------------------------------------------------
           console.log("##Arq:salaTesouro.js; FUNC: criarCollection; MSG:");
           console.log("Será criado a collection 'salaTEsouros' "); 
