@@ -14,7 +14,7 @@ Livro_1/
 │   │   └── 
 │   ├── services/
 │   │   └── 
-│   ├── routes/
+│   ├── rotas/
 │   │   └── 
 │   ├── config/
 │   │   └── 
@@ -31,7 +31,7 @@ Livro_1/
 - controllers: Contém os controladores que tratam as requisições HTTP.
 - models: Contém as definições dos modelos de dados.
 - services: Contém a lógica de negócio da aplicação.
-- routes: Define as rotas da aplicação.
+- rotas: Define as rotas da aplicação.
 - config: Contém configurações da aplicação, como conexões com bancos de dados.
 - utils: Contém funções utilitárias.
 - tests: Contém os testes unitários e de integração.
@@ -111,3 +111,23 @@ Livro_1/
 
 * `salaTesouro.js`  uso do mongoose.online. O if para criar o fantasmta estava errado. module.export para dar acesso ao arquivo.
 
+### Livro_1: v06 WIP- escuta de porta 8080 ativada. Primeira rota da API. Controllers iniciados
+OBS:
+- está com problema para reconhecer e tratar o tesouro misterioso enviado via requisição
+-/-/-/-/-/-/-/-/-/-/-
+
+*estudoNodeJS*
+* `igualdade_dentre_vetores.js` estudo de arrays com exemplos de uso de .some() .filte() .has() e new Set()
+* `module_exports.js` comentário sobre o moduleExports
+
+*cdgf*
+* `navio.js` mudado a porta de 3000 para 8080. Iniciado a leitura dessa porta para verificar requisições. _consign_ ampliado com rotas e controllers.
+
+*cdgf/controllers*
+* iniciado os arquivos das funções acionadas pelas requisições http. 
+        `comprar_comida.js`     : imput de comidas e output de dinheiro
+        `cozinha`               : output de comidas
+        `encontrar_tesouros.js` : input de tesouros, mapas e moedas
+
+*cdgf/rotas*
+* adicionado a primeira rota da API `mixDeTesouros` no arquivo `rotas_piratas.js`

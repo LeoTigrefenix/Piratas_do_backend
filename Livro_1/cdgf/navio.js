@@ -17,10 +17,13 @@ const consign = require('consign');
 const bodyParser = require('body-parser');
 
 //constantes
-const port = 3000;             // Porta que o servidor irá ouvir
+const port = 8080;             // Porta que o servidor irá ouvir
 
 //variável que vai dar acesso as funções do express em todos os códigos do backend
 const app = express();         
+
+//ativar a interpretação de JSON
+app.use(bodyParser.json());
 
 //deixar o mongoose mais acessível, não precisa dar require em todo arquivo que usa ele
 app.mongoose = mongoose;
@@ -30,10 +33,9 @@ consign()
     .include("./cdgf/config")
     .then("./cdgf/contraCapa")
     .then("./cdgf/models/esquemas")  
+    .then("./cdgf/controllers")  
+    .then("./cdgf/rotas")
     .into(app);
-
-
-
 
 // ... Resto do código
 
@@ -98,3 +100,7 @@ console.log(`
 
 
     `)
+
+    app.listen(port, () => {
+        console.log(`Backend ligado na porta ${port}`);
+      });
